@@ -139,6 +139,7 @@ extension ScheduleViewController: UITableViewDataSource {
         
         let switchView = UISwitch(frame: .zero)
         switchView.tag = indexPath.row
+        switchView.onTintColor = .hdBlue
         switchView.addTarget(
             self,
             action: #selector(toggleSwitch(_:)),

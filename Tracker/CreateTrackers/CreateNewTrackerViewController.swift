@@ -104,7 +104,7 @@ final class CreateNewTrackerViewController: UIViewController {
         delegate?.saveAndReloadData(
             with: Tracker(
                 id: UUID(),
-                title: "Sprint_14",
+                title: nameTrackerTextField.text ?? "None",
                 color: .colorSelection1,
                 emoji: "🤡",
                 date: schedule),

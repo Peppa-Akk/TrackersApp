@@ -16,7 +16,8 @@ final class TrackersViewController: UIViewController {
     private var addTrackerButton = UIButton()
     
     //MARK: - Variables
-    private var currentDay: Date?
+    private var currentDay = Date()
+    private var today = Date()
     
     private lazy var dateFormatter: DateFormatter = {
             let formatter = DateFormatter()
@@ -40,6 +41,10 @@ final class TrackersViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let calendar = Calendar.current
+        var interval = TimeInterval()
+        calendar.dateInterval(of: .day, start: &today, interval: &interval, for: Date())
+        today = calendar.date(byAdding: .second, value: Int(interval-1), to: today)!
         activateUI()
         reloadData()
     }
@@ -53,8 +58,9 @@ final class TrackersViewController: UIViewController {
     @objc
     private func datePickerValueChanged() {
         
+        currentDay = datePicker.date
         let calendar = Calendar.current
-        let filterWeekday = calendar.component(.weekday, from: datePicker.date)
+        let filterWeekday = calendar.component(.weekday, from: currentDay)
         visibleCategories = categories.compactMap { category in
             let trackers = category.trackers.filter { tracker in
                 tracker.date.contains { weekDay in
@@ -316,13 +322,17 @@ extension TrackersViewController: UICollectionViewDelegateFlowLayout {
 extension TrackersViewController: TrackerCollectionViewCellDelegate {
     
     func completeTracker(id: UUID, at indexPath: IndexPath) {
-        let trackerRecord = TrackerRecord(id: id, date: datePicker.date)
-        completedTrackers.append(trackerRecord)
         
-        collection.reloadItems(at: [indexPath])
+        if currentDay <= today {
+            let trackerRecord = TrackerRecord(id: id, date: currentDay)
+            completedTrackers.append(trackerRecord)
+            
+            collection.reloadItems(at: [indexPath])
+        }
     }
     
     func uncompleted(id: UUID, at indexPath: IndexPath) {
+        
         completedTrackers.removeAll { trackerRecord in
             let isSameDay = Calendar.current.isDate(trackerRecord.date, inSameDayAs: datePicker.date)
             return trackerRecord.id == id && isSameDay
