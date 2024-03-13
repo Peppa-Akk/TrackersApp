@@ -1,6 +1,6 @@
 import Foundation
 
-enum ScheduleModel: String, CaseIterable {
+enum ScheduleModel: String, CaseIterable, Codable {
     
     case monday = "Понедельник"
     case tuesday = "Вторник"
