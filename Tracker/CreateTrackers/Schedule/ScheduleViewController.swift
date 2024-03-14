@@ -5,6 +5,7 @@ protocol ScheduleDelegate: AnyObject {
     
     var schedule: [ScheduleModel] { get set }
     func deselectButton()
+    func setDescription(with schedule: [ScheduleModel])
 }
 
 final class ScheduleViewController: UIViewController {
@@ -56,6 +57,7 @@ final class ScheduleViewController: UIViewController {
     private func chooseWeekDays() {
         
         delegate?.schedule = selectedDays
+        delegate?.setDescription(with: selectedDays)
         self.dismiss(animated: true)
     }
 }

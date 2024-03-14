@@ -19,7 +19,6 @@
 		4D5E28F72B3C6AD300EEEF57 /* EmojisAndColorsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5E28F62B3C6AD300EEEF57 /* EmojisAndColorsModel.swift */; };
 		4D5F48952B2682C300A8B7ED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5F48942B2682C300A8B7ED /* AppDelegate.swift */; };
 		4D5F48972B2682C300A8B7ED /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5F48962B2682C300A8B7ED /* SceneDelegate.swift */; };
-		4D5F48992B2682C300A8B7ED /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5F48982B2682C300A8B7ED /* ViewController.swift */; };
 		4D5F489E2B2682C500A8B7ED /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D5F489D2B2682C500A8B7ED /* Assets.xcassets */; };
 		4D5F48A12B2682C500A8B7ED /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4D5F489F2B2682C500A8B7ED /* LaunchScreen.storyboard */; };
 		4D5F48AC2B2682C600A8B7ED /* TrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5F48AB2B2682C600A8B7ED /* TrackerTests.swift */; };
@@ -74,7 +73,6 @@
 		4D5F48912B2682C300A8B7ED /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D5F48942B2682C300A8B7ED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4D5F48962B2682C300A8B7ED /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		4D5F48982B2682C300A8B7ED /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		4D5F489D2B2682C500A8B7ED /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4D5F48A02B2682C500A8B7ED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4D5F48A22B2682C500A8B7ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -189,7 +187,6 @@
 				4D5F48C42B268B6F00A8B7ED /* Helper */,
 				4D5F48942B2682C300A8B7ED /* AppDelegate.swift */,
 				4D5F48962B2682C300A8B7ED /* SceneDelegate.swift */,
-				4D5F48982B2682C300A8B7ED /* ViewController.swift */,
 				4DE890F92B67252F0056D7DC /* CoreData */,
 				4D5F489D2B2682C500A8B7ED /* Assets.xcassets */,
 				4D5F489F2B2682C500A8B7ED /* LaunchScreen.storyboard */,
@@ -420,7 +417,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D5F48992B2682C300A8B7ED /* ViewController.swift in Sources */,
 				4D5F48952B2682C300A8B7ED /* AppDelegate.swift in Sources */,
 				4D5E28F72B3C6AD300EEEF57 /* EmojisAndColorsModel.swift in Sources */,
 				4D84DF372B61894A00F28338 /* CategoryViewController.swift in Sources */,

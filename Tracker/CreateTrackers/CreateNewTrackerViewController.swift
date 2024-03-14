@@ -58,6 +58,9 @@ final class CreateNewTrackerViewController: UIViewController {
     private var selectEmoji: SelectEmoji?
     private var selectColor: SelectColor?
     
+    private var selectedDays: String = ""
+    private var selectedCategory: String = ""
+    
     private lazy var nameTrackerTextField = UITextField()
     
     private var contentView = UIView()
@@ -298,6 +301,29 @@ extension CreateNewTrackerViewController {
             scrollView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -60)
         ])
     }
+    
+    func setupSubtitleSchedule() {
+        
+        checkSchedule(with: selectedDays)
+    }
+    
+    func setupSubtitleCategory() {
+        
+        checkSchedule(with: selectedCategory)
+    }
+    
+    func checkSchedule(with data: String) {
+        
+        guard let cell = tableView.cellForRow(at: IndexPath(row: ButtonType.schedule.rawValue, section: 0)) as? ButtonCell else { assertionFailure("Cannot find cell in tableView"); return}
+        
+        switch data.isEmpty {
+        case true:
+            cell.switchLabelsBack()
+        case false:
+            cell.switchLabels()
+            cell.subTitle.text = data
+        }
+    }
 }
 
 //MARK: - UICollectionViewDataSource
@@ -477,10 +503,7 @@ extension CreateNewTrackerViewController: UITableViewDataSource {
         case TrackerType.habit.rawValue:
             
             cell.title.text = "Расписание"
-            
-        case 3:
-            
-            cell.title.text = "123"
+
         default:
             return cell
         }
@@ -523,6 +546,24 @@ extension CreateNewTrackerViewController: ScheduleDelegate {
         if let cell = tableView.cellForRow(at: indexPath) as? ButtonCell {
             cell.isSelected.toggle()
         }
+    }
+    
+    func setDescription(with schedule: [ScheduleModel]) {
+        
+        var scheduleSort = schedule
+        scheduleSort.sort { $0.compareValue < $1.compareValue }
+        switch scheduleSort {
+        case [.monday, .tuesday, .wednesday, .thursday, .friday]:
+            selectedDays = "Будние"
+        case ScheduleModel.allCases:
+            selectedDays = "Каждый день"
+        case [.saturday, .sunday]:
+            selectedDays = "Выходные"
+        default:
+            let days = schedule.map{ "\($0.shortName)" }
+            selectedDays = days.joined(separator: ", ")
+        }
+        setupSubtitleSchedule()
     }
 }
 
