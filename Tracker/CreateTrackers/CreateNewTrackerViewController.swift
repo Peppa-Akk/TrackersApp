@@ -3,7 +3,7 @@ import UIKit
 
 protocol CreateNewTrackerViewControllerDelegate: AnyObject {
     
-    func saveAndReloadData(with newData: Tracker, and category: String)
+    func saveAndReloadData(with newData: Tracker, and category: String, _ id: UUID)
 }
 
 enum TrackerType: Int {
@@ -50,6 +50,8 @@ let emojisAndColorsForSelect: [EmojisAndColorsModel] = [emojisForSelect, colorsF
 
 
 final class CreateNewTrackerViewController: UIViewController {
+    
+    private let mockCategoryID = UUID()
     
     private var trackerType: TrackerType
     private var emojiType = TypeCollection.emoji.rawValue
@@ -120,7 +122,8 @@ final class CreateNewTrackerViewController: UIViewController {
                     color: color,
                     emoji: emoji,
                     date: schedule),
-                and: "Module 3")
+                and: MockData().categoryTitle,
+                MockData().categoryID)
             navigationController?.viewControllers.first?.dismiss(animated: true)
         }
     }
@@ -152,6 +155,17 @@ extension CreateNewTrackerViewController {
         setupButtonsStackViewOnView()
         setupCancelButton()
         setupCreateButton()
+        setupSchedule()
+    }
+    
+    func setupSchedule() {
+        
+        switch trackerType {
+        case .event:
+            schedule = [.monday, .tuesday, .wednesday, .thursday, .friday, .sunday, .saturday]
+        default:
+            return
+        }
     }
     
     func setupTextField() {

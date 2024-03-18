@@ -47,6 +47,7 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         
         if isCompletedToday {
             delegate?.uncompleted(id: trackerID, at: indexPath)
+            return
         }
         if !isCompletedToday {
             delegate?.completeTracker(id: trackerID, at: indexPath)
@@ -124,7 +125,7 @@ extension TrackerCollectionViewCell {
         nameLabel.textColor = .white
         cardView.addSubview(nameLabel)
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        //TODO: - Заебашить вниз-лево сам текст
+        
         NSLayoutConstraint.activate([
             nameLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 12),
             nameLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -12),
@@ -153,7 +154,7 @@ extension TrackerCollectionViewCell {
         dateLabel.textColor = .hdBlack
         managmentView.addSubview(dateLabel)
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
-        //TODO: - Заебашить текст влево
+        
         NSLayoutConstraint.activate([
             dateLabel.leadingAnchor.constraint(equalTo: managmentView.leadingAnchor, constant: 12),
             dateLabel.trailingAnchor.constraint(equalTo: managmentView.trailingAnchor, constant: -54),

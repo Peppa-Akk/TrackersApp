@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D32B6992BA58B2E00B5FAB7 /* CategoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D32B6982BA58B2E00B5FAB7 /* CategoryStore.swift */; };
+		4D32B69B2BA59C4300B5FAB7 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D32B69A2BA59C4300B5FAB7 /* MockData.swift */; };
+		4D32B69E2BA7CF0600B5FAB7 /* DateHelper in Frameworks */ = {isa = PBXBuildFile; productRef = 4D32B69D2BA7CF0600B5FAB7 /* DateHelper */; };
+		4D33DB3D2BA4A3FE00B60D54 /* TrackerCoreData+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D33DB3C2BA4A3FE00B60D54 /* TrackerCoreData+CoreDataClass.swift */; };
+		4D33DB3F2BA4A43700B60D54 /* TrackerCoreData+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D33DB3E2BA4A43700B60D54 /* TrackerCoreData+CoreDataProperties.swift */; };
 		4D3C24392B649ACC000CC122 /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D3C24382B649ACC000CC122 /* Int+Extensions.swift */; };
 		4D42C8662B3AF89C00925406 /* HabitOrIrregularEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D42C8652B3AF89C00925406 /* HabitOrIrregularEventViewController.swift */; };
 		4D42C8682B3BC6C900925406 /* CreateNewTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D42C8672B3BC6C900925406 /* CreateNewTrackerViewController.swift */; };
@@ -16,6 +21,8 @@
 		4D448CF02B27B118000E936B /* StatisticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D448CEF2B27B118000E936B /* StatisticsViewController.swift */; };
 		4D448CF22B27B140000E936B /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D448CF12B27B140000E936B /* TabBarController.swift */; };
 		4D48EC8A2BA1336200FCDADF /* DaysValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D48EC892BA1336200FCDADF /* DaysValueTransformer.swift */; };
+		4D48EC942BA2BDA100FCDADF /* UIColorMarshalling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D48EC932BA2BDA100FCDADF /* UIColorMarshalling.swift */; };
+		4D4F39462BA3662F00CB9C53 /* StoreDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D4F39452BA3662F00CB9C53 /* StoreDelegate.swift */; };
 		4D5E28F72B3C6AD300EEEF57 /* EmojisAndColorsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5E28F62B3C6AD300EEEF57 /* EmojisAndColorsModel.swift */; };
 		4D5F48952B2682C300A8B7ED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5F48942B2682C300A8B7ED /* AppDelegate.swift */; };
 		4D5F48972B2682C300A8B7ED /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5F48962B2682C300A8B7ED /* SceneDelegate.swift */; };
@@ -60,6 +67,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4D32B6982BA58B2E00B5FAB7 /* CategoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryStore.swift; sourceTree = "<group>"; };
+		4D32B69A2BA59C4300B5FAB7 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
+		4D33DB3C2BA4A3FE00B60D54 /* TrackerCoreData+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TrackerCoreData+CoreDataClass.swift"; sourceTree = "<group>"; };
+		4D33DB3E2BA4A43700B60D54 /* TrackerCoreData+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TrackerCoreData+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4D3C24382B649ACC000CC122 /* Int+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extensions.swift"; sourceTree = "<group>"; };
 		4D42C8652B3AF89C00925406 /* HabitOrIrregularEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitOrIrregularEventViewController.swift; sourceTree = "<group>"; };
 		4D42C8672B3BC6C900925406 /* CreateNewTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewTrackerViewController.swift; sourceTree = "<group>"; };
@@ -69,6 +80,8 @@
 		4D448CEF2B27B118000E936B /* StatisticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewController.swift; sourceTree = "<group>"; };
 		4D448CF12B27B140000E936B /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		4D48EC892BA1336200FCDADF /* DaysValueTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaysValueTransformer.swift; sourceTree = "<group>"; };
+		4D48EC932BA2BDA100FCDADF /* UIColorMarshalling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorMarshalling.swift; sourceTree = "<group>"; };
+		4D4F39452BA3662F00CB9C53 /* StoreDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreDelegate.swift; sourceTree = "<group>"; };
 		4D5E28F62B3C6AD300EEEF57 /* EmojisAndColorsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojisAndColorsModel.swift; sourceTree = "<group>"; };
 		4D5F48912B2682C300A8B7ED /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D5F48942B2682C300A8B7ED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -104,6 +117,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D32B69E2BA7CF0600B5FAB7 /* DateHelper in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -127,7 +141,6 @@
 		4D42C8642B3AF83200925406 /* CreateTrackers */ = {
 			isa = PBXGroup;
 			children = (
-				4D8A7C4E2B697D980053708E /* CoreDataStores */,
 				4D84DF352B61891700F28338 /* Schedule */,
 				4D84DF342B6188EB00F28338 /* Category */,
 				4DE9DC1F2B60824600E8905D /* ButtonsTableView */,
@@ -218,6 +231,8 @@
 				4D5F48C52B268B8800A8B7ED /* UIColor+Extensions.swift */,
 				4D64580E2B605A21003E8548 /* UITextField+Extensions.swift */,
 				4D3C24382B649ACC000CC122 /* Int+Extensions.swift */,
+				4D48EC932BA2BDA100FCDADF /* UIColorMarshalling.swift */,
+				4D32B69A2BA59C4300B5FAB7 /* MockData.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -244,7 +259,11 @@
 			children = (
 				4D8A7C4F2B697DBB0053708E /* TrackerStore.swift */,
 				4D8A7C512B697DC70053708E /* TrackerCategoryStore.swift */,
+				4D32B6982BA58B2E00B5FAB7 /* CategoryStore.swift */,
 				4D8A7C532B697E050053708E /* TrackerRecordStore.swift */,
+				4D4F39452BA3662F00CB9C53 /* StoreDelegate.swift */,
+				4D33DB3C2BA4A3FE00B60D54 /* TrackerCoreData+CoreDataClass.swift */,
+				4D33DB3E2BA4A43700B60D54 /* TrackerCoreData+CoreDataProperties.swift */,
 			);
 			path = CoreDataStores;
 			sourceTree = "<group>";
@@ -273,6 +292,7 @@
 		4DE890F92B67252F0056D7DC /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				4D8A7C4E2B697D980053708E /* CoreDataStores */,
 				4DE890F62B67205F0056D7DC /* TrackerCoreDataModel.xcdatamodeld */,
 				4D48EC892BA1336200FCDADF /* DaysValueTransformer.swift */,
 			);
@@ -303,6 +323,9 @@
 			dependencies = (
 			);
 			name = Tracker;
+			packageProductDependencies = (
+				4D32B69D2BA7CF0600B5FAB7 /* DateHelper */,
+			);
 			productName = Tracker;
 			productReference = 4D5F48912B2682C300A8B7ED /* Tracker.app */;
 			productType = "com.apple.product-type.application";
@@ -375,6 +398,9 @@
 				Base,
 			);
 			mainGroup = 4D5F48882B2682C300A8B7ED;
+			packageReferences = (
+				4D32B69C2BA7CF0600B5FAB7 /* XCRemoteSwiftPackageReference "DateHelper" */,
+			);
 			productRefGroup = 4D5F48922B2682C300A8B7ED /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -417,13 +443,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D4F39462BA3662F00CB9C53 /* StoreDelegate.swift in Sources */,
 				4D5F48952B2682C300A8B7ED /* AppDelegate.swift in Sources */,
 				4D5E28F72B3C6AD300EEEF57 /* EmojisAndColorsModel.swift in Sources */,
+				4D32B69B2BA59C4300B5FAB7 /* MockData.swift in Sources */,
 				4D84DF372B61894A00F28338 /* CategoryViewController.swift in Sources */,
 				4D42C8662B3AF89C00925406 /* HabitOrIrregularEventViewController.swift in Sources */,
 				4D924A672B35D2A400AADF69 /* GeometricParams.swift in Sources */,
 				4DE526562B30CAD200032E56 /* TrackerModel.swift in Sources */,
 				4D42C8682B3BC6C900925406 /* CreateNewTrackerViewController.swift in Sources */,
+				4D48EC942BA2BDA100FCDADF /* UIColorMarshalling.swift in Sources */,
+				4D33DB3D2BA4A3FE00B60D54 /* TrackerCoreData+CoreDataClass.swift in Sources */,
+				4D32B6992BA58B2E00B5FAB7 /* CategoryStore.swift in Sources */,
 				4D8A7C522B697DC70053708E /* TrackerCategoryStore.swift in Sources */,
 				4D924A612B34954D00AADF69 /* SupplementaryView.swift in Sources */,
 				4D448CEE2B27B0EA000E936B /* TrackersViewController.swift in Sources */,
@@ -441,6 +472,7 @@
 				4D93A76D2B9E574800971284 /* SelectCellModel.swift in Sources */,
 				4D84DF392B618A6500F28338 /* ScheduleViewController.swift in Sources */,
 				4D8A7C542B697E050053708E /* TrackerRecordStore.swift in Sources */,
+				4D33DB3F2BA4A43700B60D54 /* TrackerCoreData+CoreDataProperties.swift in Sources */,
 				4D42C86F2B3BCD5300925406 /* ColorsCell.swift in Sources */,
 				4D448CF02B27B118000E936B /* StatisticsViewController.swift in Sources */,
 				4D64580F2B605A21003E8548 /* UITextField+Extensions.swift in Sources */,
@@ -787,6 +819,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4D32B69C2BA7CF0600B5FAB7 /* XCRemoteSwiftPackageReference "DateHelper" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/melvitax/DateHelper";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4D32B69D2BA7CF0600B5FAB7 /* DateHelper */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4D32B69C2BA7CF0600B5FAB7 /* XCRemoteSwiftPackageReference "DateHelper" */;
+			productName = DateHelper;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		4DE890F62B67205F0056D7DC /* TrackerCoreDataModel.xcdatamodeld */ = {
