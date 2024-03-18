@@ -1,6 +1,6 @@
 import Foundation
 
-enum ScheduleModel: String, CaseIterable {
+enum ScheduleModel: String, CaseIterable, Codable {
     
     case monday = "Понедельник"
     case tuesday = "Вторник"
@@ -45,6 +45,25 @@ enum ScheduleModel: String, CaseIterable {
             7
         case .sunday:
             1
+        }
+    }
+    
+    var compareValue: Int {
+        switch self {
+        case .monday:
+            1
+        case .tuesday:
+            2
+        case .wednesday:
+            3
+        case .thursday:
+            4
+        case .friday:
+            5
+        case .saturday:
+            6
+        case .sunday:
+            7
         }
     }
 }

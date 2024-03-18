@@ -1,4 +1,5 @@
 import UIKit
+import DateHelper
 
 final class TrackersViewController: UIViewController {
     //MARK: - UI Components
@@ -20,22 +21,21 @@ final class TrackersViewController: UIViewController {
     private var today = Date()
     
     private lazy var dateFormatter: DateFormatter = {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "dd MMMM yyyy"
-            formatter.locale = Locale(identifier: "ru_RU")
-            return formatter
-        }()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd MMMM yyyy"
+        formatter.locale = Locale(identifier: "ru_RU")
+        return formatter
+    }()
+    
+    //MARK: Store init
+    private let trackerStore = TrackerStore(context: (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext)
+    private let categoryStore = CategoryStore.shared
+    private let recordStore = TrackerRecordStore(context: (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext)
+    
     private var categories: [TrackerCategory] = []
     private var visibleCategories: [TrackerCategory] = []
     private var completedTrackers: [TrackerRecord] = []
     private let params = GeometricParams(cellCount: 2, leftInset: 16, rightInset: 16, cellSpacing: 9)
-    
-//    private var mockData: [TrackerCategory] =
-//    [
-//        TrackerCategory(title: "Важное", trackers: [
-//            Tracker(id: UUID(), title: "Tracker 5", color: .colorSelection7, emoji: "😋", date: Date())
-//        ])
-//    ]
     
     //MARK: - ViewDidLoad
     override func viewDidLoad() {
@@ -45,6 +45,13 @@ final class TrackersViewController: UIViewController {
         var interval = TimeInterval()
         calendar.dateInterval(of: .day, start: &today, interval: &interval, for: Date())
         today = calendar.date(byAdding: .second, value: Int(interval-1), to: today)!
+        
+        categories = categoryStore.collection
+        if categories.isEmpty { try? categoryStore.addNewCategory(TrackerCategory(id: MockData().categoryID,
+                                                                             title: MockData().categoryTitle,
+                                                                             trackers: [])) }
+        completedTrackers = recordStore.collection
+        print(completedTrackers)
         activateUI()
         reloadData()
     }
@@ -72,13 +79,13 @@ final class TrackersViewController: UIViewController {
             }
             
             return TrackerCategory(
+                id: UUID(),
                 title: category.title,
                 trackers: trackers
             )
         }
         setupPlug(with: categories.isEmpty)
         collection.reloadData()
-
     }
     
     @objc
@@ -103,6 +110,7 @@ extension TrackersViewController {
         addTitleLabel()
         setupSearchController()
         setupUICollectionView()
+        setupDelegates()
     }
     
     func setupUICollectionView() {
@@ -207,9 +215,42 @@ extension TrackersViewController {
         definesPresentationContext = false
         navigationItem.hidesSearchBarWhenScrolling = false
     }
+    
+    func setupDelegates() {
+        trackerStore.delegate = self
+        categoryStore.delegate = self
+        recordStore.delegate = self
+    }
 }
 
-//MARK: - Search Controller Funtions
+//MARK: - Work With Stores
+extension TrackersViewController {
+    
+    func addTracker(with tracker: Tracker, and category: String, _ id: UUID) {
+        
+        let categoryCoreDataID = categoryStore.fetchCategoryID(with: id)
+        trackerStore.addNewTracker(tracker, with: categoryCoreDataID)
+        categories = categoryStore.collection
+        collection.reloadData()
+    }
+    
+//    func updateTracker(with trackers: [Tracker], and category: String, _ id: UUID) {
+//        
+//        let categoryCoreDataID = categoryStore.fetchCategoryID(with: id)
+//        let categoryCoreData = categoryStore.fetchCategory(with: categoryCoreDataID)
+//        let tracker
+//        trackerStore.updateTracker(
+//            with: trackerStore.fetchTrackerID(with: trac),
+//            categoryCoreData: categoryCoreData,
+//            and: trackers.last!
+//        )
+//        categories.append(TrackerCategory(id: id,
+//                                          title: category,
+//                                          trackers: trackers))
+//    }
+}
+
+//MARK: - Search Controller
 extension TrackersViewController: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
@@ -324,8 +365,9 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
     func completeTracker(id: UUID, at indexPath: IndexPath) {
         
         if currentDay <= today {
-            let trackerRecord = TrackerRecord(id: id, date: currentDay)
+            let trackerRecord = TrackerRecord(id: id, date: currentDay.adjust(for: .startOfDay)!)
             completedTrackers.append(trackerRecord)
+            recordStore.addNewRecord(trackerRecord, with: id)
             
             collection.reloadItems(at: [indexPath])
         }
@@ -333,11 +375,12 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
     
     func uncompleted(id: UUID, at indexPath: IndexPath) {
         
+        print(currentDay)
         completedTrackers.removeAll { trackerRecord in
             let isSameDay = Calendar.current.isDate(trackerRecord.date, inSameDayAs: datePicker.date)
             return trackerRecord.id == id && isSameDay
         }
-        
+        recordStore.deleteRecord(with: id, and: currentDay.adjust(for: .startOfDay)!)
         collection.reloadItems(at: [indexPath])
     }
 }
@@ -345,30 +388,54 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
 //MARK: - CreateNewTrackerViewControllerDelegate
 extension TrackersViewController: CreateNewTrackerViewControllerDelegate {
     
-    func saveAndReloadData(with newTracker: Tracker, and category: String) {
+    func saveAndReloadData(with newTracker: Tracker, and category: String, _ id: UUID) {
         
-        var tempCategory: TrackerCategory?
-        var tempTrackers: [Tracker]?
-        
-        for item in categories {
-            if item.title == category {
-                tempCategory = item
-                tempTrackers = item.trackers
-                break
-            }
-        }
-        
-        if tempCategory == nil {
-            categories.append(TrackerCategory(title: category,
-                                              trackers: [newTracker]))
-        }
-        if (tempCategory != nil) && (tempTrackers != nil) {
-            categories.removeAll { $0.title == category }
-            tempTrackers?.append(newTracker)
-            categories.append(TrackerCategory(title: category,
-                                              trackers: tempTrackers!))
-        }
-        
+//        var tempCategory: TrackerCategory?
+//        var tempTrackers: [Tracker]?
+//        
+//        for item in categories {
+//            if item.title == category {
+//                tempCategory = item
+//                tempTrackers = item.trackers
+//                break
+//            }
+//        }
+//        
+//        if tempCategory == nil {
+//            addTracker(with: newTracker, and: category, id)
+//        }
+//        if (tempCategory != nil) && (tempTrackers != nil) {
+//            categories.removeAll { $0.title == category }
+//            tempTrackers?.append(newTracker)
+//            categories.append(TrackerCategory(id: id, 
+//                                              title: category,
+//                                              trackers: tempTrackers!))
+//        }
+        addTracker(with: newTracker, and: category, id)
         reloadData()
+    }
+}
+
+extension TrackersViewController: StoreDelegate {
+    
+    func didUpdate() {
+        collection.reloadData()
+    }
+}
+
+extension Date {
+    static func fromString(_ dateString: String, format: String) -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format
+        if let date = dateFormatter.date(from: dateString) {
+            return date
+        }
+        return nil
+    }
+    
+    func formattedString(style: DateFormatter.Style) -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = style
+        return formatter.string(from: self)
     }
 }
