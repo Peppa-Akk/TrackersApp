@@ -16,6 +16,11 @@ final class TrackersViewController: UIViewController {
     private var datePicker = UIDatePicker()
     private var addTrackerButton = UIButton()
     
+    //MARK: Store init
+    private let trackerStore = TrackerStore(context: (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext)
+    private let categoryStore = CategoryStore.shared
+    private let recordStore = TrackerRecordStore(context: (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext)
+    
     //MARK: - Variables
     private var currentDay = Date()
     private var today = Date()
@@ -26,11 +31,6 @@ final class TrackersViewController: UIViewController {
         formatter.locale = Locale(identifier: "ru_RU")
         return formatter
     }()
-    
-    //MARK: Store init
-    private let trackerStore = TrackerStore(context: (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext)
-    private let categoryStore = CategoryStore.shared
-    private let recordStore = TrackerRecordStore(context: (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext)
     
     private var categories: [TrackerCategory] = []
     private var visibleCategories: [TrackerCategory] = []
@@ -47,11 +47,8 @@ final class TrackersViewController: UIViewController {
         today = calendar.date(byAdding: .second, value: Int(interval-1), to: today)!
         
         categories = categoryStore.collection
-        if categories.isEmpty { try? categoryStore.addNewCategory(TrackerCategory(id: MockData().categoryID,
-                                                                             title: MockData().categoryTitle,
-                                                                             trackers: [])) }
+
         completedTrackers = recordStore.collection
-        print(completedTrackers)
         activateUI()
         reloadData()
     }
@@ -84,7 +81,7 @@ final class TrackersViewController: UIViewController {
                 trackers: trackers
             )
         }
-        setupPlug(with: categories.isEmpty)
+        setupPlug(with: visibleCategories.isEmpty)
         collection.reloadData()
     }
     
@@ -375,7 +372,6 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
     
     func uncompleted(id: UUID, at indexPath: IndexPath) {
         
-        print(currentDay)
         completedTrackers.removeAll { trackerRecord in
             let isSameDay = Calendar.current.isDate(trackerRecord.date, inSameDayAs: datePicker.date)
             return trackerRecord.id == id && isSameDay
@@ -390,27 +386,6 @@ extension TrackersViewController: CreateNewTrackerViewControllerDelegate {
     
     func saveAndReloadData(with newTracker: Tracker, and category: String, _ id: UUID) {
         
-//        var tempCategory: TrackerCategory?
-//        var tempTrackers: [Tracker]?
-//        
-//        for item in categories {
-//            if item.title == category {
-//                tempCategory = item
-//                tempTrackers = item.trackers
-//                break
-//            }
-//        }
-//        
-//        if tempCategory == nil {
-//            addTracker(with: newTracker, and: category, id)
-//        }
-//        if (tempCategory != nil) && (tempTrackers != nil) {
-//            categories.removeAll { $0.title == category }
-//            tempTrackers?.append(newTracker)
-//            categories.append(TrackerCategory(id: id, 
-//                                              title: category,
-//                                              trackers: tempTrackers!))
-//        }
         addTracker(with: newTracker, and: category, id)
         reloadData()
     }

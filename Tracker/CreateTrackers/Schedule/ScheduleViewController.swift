@@ -4,7 +4,7 @@ import UIKit
 protocol ScheduleDelegate: AnyObject {
     
     var schedule: [ScheduleModel] { get set }
-    func deselectButton()
+    func deselectButton(with type: Int)
     func setDescription(with schedule: [ScheduleModel])
 }
 
@@ -37,7 +37,7 @@ final class ScheduleViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        delegate?.deselectButton()
+        delegate?.deselectButton(with: ButtonType.schedule.rawValue)
     }
     
     @objc

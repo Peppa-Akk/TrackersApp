@@ -80,6 +80,7 @@ final class CreateNewTrackerViewController: UIViewController {
     private var scrollView = UIScrollView()
     
     var schedule: [ScheduleModel] = []
+    var category: TrackerCategory? = nil
     weak var delegate: CreateNewTrackerViewControllerDelegate?
     
     override func viewWillAppear(_ animated: Bool) {
@@ -113,7 +114,9 @@ final class CreateNewTrackerViewController: UIViewController {
     private func createButtonTouchUpInside() {
         
         if let emoji = selectEmoji?.title,
-           let color = selectColor?.color
+           let color = selectColor?.color,
+           let categoryTitle = category?.title,
+           let categoryID = category?.id
         {
             delegate?.saveAndReloadData(
                 with: Tracker(
@@ -122,8 +125,8 @@ final class CreateNewTrackerViewController: UIViewController {
                     color: color,
                     emoji: emoji,
                     date: schedule),
-                and: MockData().categoryTitle,
-                MockData().categoryID)
+                and: categoryTitle,
+                categoryID)
             navigationController?.viewControllers.first?.dismiss(animated: true)
         }
     }
@@ -318,17 +321,17 @@ extension CreateNewTrackerViewController {
     
     func setupSubtitleSchedule() {
         
-        checkSchedule(with: selectedDays)
+        checkSubtitle(with: selectedDays, in: ButtonType.schedule.rawValue)
     }
     
     func setupSubtitleCategory() {
         
-        checkSchedule(with: selectedCategory)
+        checkSubtitle(with: selectedCategory, in: ButtonType.category.rawValue)
     }
     
-    func checkSchedule(with data: String) {
+    func checkSubtitle(with data: String, in buttonType: Int) {
         
-        guard let cell = tableView.cellForRow(at: IndexPath(row: ButtonType.schedule.rawValue, section: 0)) as? ButtonCell else { assertionFailure("Cannot find cell in tableView"); return}
+        guard let cell = tableView.cellForRow(at: IndexPath(row: buttonType, section: 0)) as? ButtonCell else { assertionFailure("Cannot find cell in tableView"); return}
         
         switch data.isEmpty {
         case true:
@@ -531,10 +534,12 @@ extension CreateNewTrackerViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
-//        case ButtonType.category.rawValue:
-//            
-//            let viewToPresent = UINavigationController(rootViewController: CategoryViewController())
-//            self.present(viewToPresent, animated: true)
+        case ButtonType.category.rawValue:
+            
+            let vc = CategoryViewController(with: category)
+            vc.delegate = self
+            let viewToPresent = UINavigationController(rootViewController: vc)
+            self.present(viewToPresent, animated: true)
         case ButtonType.schedule.rawValue:
             
             let vc = ScheduleViewController(with: schedule)
@@ -552,11 +557,11 @@ extension CreateNewTrackerViewController: UITableViewDelegate {
 }
 
 //MARK: - ScheduleDelegate
-extension CreateNewTrackerViewController: ScheduleDelegate {
+extension CreateNewTrackerViewController: ScheduleDelegate, CategoryDelegate {    
     
-    func deselectButton() {
+    func deselectButton(with type: Int) {
         
-        let indexPath = IndexPath(row: ButtonType.schedule.rawValue, section: 0)
+        let indexPath = IndexPath(row: type, section: 0)
         if let cell = tableView.cellForRow(at: indexPath) as? ButtonCell {
             cell.isSelected.toggle()
         }
@@ -578,6 +583,12 @@ extension CreateNewTrackerViewController: ScheduleDelegate {
             selectedDays = days.joined(separator: ", ")
         }
         setupSubtitleSchedule()
+    }
+    
+    func setDescription(with category: String) {
+        
+        selectedCategory = category
+        setupSubtitleCategory()
     }
 }
 
