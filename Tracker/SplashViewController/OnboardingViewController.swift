@@ -2,8 +2,6 @@ import UIKit
 
 final class OnboardingViewController: UIPageViewController {
     
-    private let storage = AuthStorage()
-    
     lazy var pages: [UIViewController] = {
         let firstPage = PageForOnboardingViewController(page: PageVC.first)
         let secondPage = PageForOnboardingViewController(page: PageVC.second)
@@ -25,20 +23,6 @@ final class OnboardingViewController: UIPageViewController {
         return pageControl
     }()
     
-    lazy var entranceButton: UIButton = {
-        let button = UIButton()
-        button.addTarget(self, action: #selector(firstEntrance), for: .touchUpInside)
-        button.backgroundColor = UIColor(red: 26/255, green: 27/255, blue: 34/255, alpha: 1)
-        button.setTitle("Вот это технологии!", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.contentMode = .center
-        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        button.layer.cornerRadius = 16
-        button.layer.masksToBounds = true
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
     override func viewDidLoad() {
         delegate = self
         dataSource = self
@@ -49,15 +33,6 @@ final class OnboardingViewController: UIPageViewController {
         
         activateUI()
     }
-    
-    @objc
-    private func firstEntrance() {
-        storage.firstJoin = true
-        
-        guard let window = UIApplication.shared.windows.first else { storage.firstJoin = false; return }
-        let tabBarController = TabBarController()
-        window.rootViewController = tabBarController
-    }
 }
 
 extension OnboardingViewController {
@@ -67,16 +42,11 @@ extension OnboardingViewController {
     }
     
     func setupConstraints() {
-        [pageControl, entranceButton].forEach { view.addSubview($0) }
+        view.addSubview(pageControl)
         
         NSLayoutConstraint.activate([
-            entranceButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            entranceButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            entranceButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50),
-            entranceButton.heightAnchor.constraint(equalToConstant: 60),
-            
             pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            pageControl.bottomAnchor.constraint(equalTo: entranceButton.topAnchor, constant: -24)
+            pageControl.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -134)
         ])
     }
 }

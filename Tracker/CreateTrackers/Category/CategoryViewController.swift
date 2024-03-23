@@ -176,21 +176,7 @@ extension CategoryViewController: UITableViewDataSource {
             withIdentifier: CategoryCell.reuseIdentifier,
             for: indexPath) as? CategoryCell else { return UITableViewCell() }
         
-        let selectCategory = UIImageView(image: .selectCategory)
-        
-        cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        cell.accessoryView = selectCategory
-        
         cell.viewModel = viewModel.categoryList[indexPath.item]
-        
-        if
-            let selectedCategory = selectedCategory,
-            cell.title.text == selectedCategory.title
-        {
-            cell.accessoryView?.isHidden = false
-        } else {
-            cell.accessoryView?.isHidden = true
-        }
         
         let cellCount = tableView.numberOfRows(inSection: indexPath.section)
         if cellCount == 1 {

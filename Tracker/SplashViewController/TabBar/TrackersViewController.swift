@@ -87,7 +87,9 @@ final class TrackersViewController: UIViewController {
     
     @objc
     private func addTrackerButtonAction() {
-
+//        FOR DELETE KEYCHAIN PROPERTY
+//        let storage = AuthStorage()
+//        storage.cleanData()
         let vc = HabitOrIrregularEventViewController()
         vc.delegate = self
         let viewToPresent = UINavigationController(rootViewController: vc)
