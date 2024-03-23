@@ -30,8 +30,7 @@ final class HabitOrIrregularEventViewController: UIViewController {
         
         let vc = CreateNewTrackerViewController(trackerType: .event)
         vc.delegate = delegate
-        let viewToPresent = UINavigationController(rootViewController: vc)
-        self.present(viewToPresent, animated: true)
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 
