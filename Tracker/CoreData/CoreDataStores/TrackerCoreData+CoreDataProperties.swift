@@ -12,6 +12,7 @@ extension TrackerCoreData {
     @NSManaged public var title: String?
     @NSManaged public var color: String?
     @NSManaged public var emoji: String?
+    @NSManaged public var isPin: Bool
     @NSManaged var schedule: DaysValue?
     @NSManaged public var category: TrackerCategoryCoreData?
     @NSManaged public var record: TrackerRecordCoreData?

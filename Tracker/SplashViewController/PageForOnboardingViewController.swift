@@ -18,15 +18,15 @@ final class PageForOnboardingViewController: UIViewController {
         UIImage(resource: .onboardImage2)
     ]
     let textLabel: [String] = [
-        "Отслеживайте только\nто, что хотите",
-        "Даже если это\nне литры воды и йога"
+        NSLocalizedString("Onboarding 1", comment: ""),
+        NSLocalizedString("Onboarding 2", comment: "")
     ]
     
     lazy var entranceButton: UIButton = {
         let button = UIButton()
         button.addTarget(self, action: #selector(firstEntrance), for: .touchUpInside)
         button.backgroundColor = UIColor(red: 26/255, green: 27/255, blue: 34/255, alpha: 1)
-        button.setTitle("Вот это технологии!", for: .normal)
+        button.setTitle(NSLocalizedString("Onboarding.button", comment: ""), for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.contentMode = .center
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)

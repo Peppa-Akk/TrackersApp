@@ -69,7 +69,7 @@ extension ScheduleViewController {
     func setupNavigationController() {
         navigationController?.view.backgroundColor = .hdWhite
         navigationController?.navigationBar.isTranslucent = false
-        self.navigationItem.title = "Расписание"
+        self.navigationItem.title = NSLocalizedString("Schedule", comment: "")
     }
 }
 
@@ -107,7 +107,7 @@ extension ScheduleViewController {
     func setupButton() {
         
         readyButton.backgroundColor = .hdBlack
-        readyButton.setTitle("Готово", for: .normal)
+        readyButton.setTitle(NSLocalizedString("Ready.Button", comment: ""), for: .normal)
         readyButton.setTitleColor(.hdWhite, for: .normal)
         readyButton.titleLabel?.contentMode = .center
         readyButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
@@ -154,7 +154,7 @@ extension ScheduleViewController: UITableViewDataSource {
         cell.accessoryView = switchView
         cell.selectionStyle = .none
         
-        cell.title.text = week[indexPath.row].rawValue
+        cell.title.text = NSLocalizedString(week[indexPath.row].rawValue, comment: "")
         
         return cell
     }

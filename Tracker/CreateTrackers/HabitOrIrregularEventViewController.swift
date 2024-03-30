@@ -22,7 +22,6 @@ final class HabitOrIrregularEventViewController: UIViewController {
         let vc = CreateNewTrackerViewController(trackerType: .habit)
         vc.delegate = delegate
         navigationController?.pushViewController(vc, animated: true)
-//        self.present(viewToPresent, animated: true)
     }
     
     @objc
@@ -40,7 +39,7 @@ extension HabitOrIrregularEventViewController {
     func setupNavigationController() {
         navigationController?.view.backgroundColor = .hdWhite
         navigationController?.navigationBar.isTranslucent = false
-        self.navigationItem.title = "Создание трекера"
+        self.navigationItem.title = NSLocalizedString("AddTracker", comment: "")
     }
 }
 
@@ -70,7 +69,7 @@ extension HabitOrIrregularEventViewController {
     
     func addHabitButtonOnView() {
         habitButton.backgroundColor = .hdBlack
-        habitButton.setTitle("Привычка", for: .normal)
+        habitButton.setTitle(NSLocalizedString("Habbit", comment: ""), for: .normal)
         habitButton.setTitleColor(.hdWhite, for: .normal)
         habitButton.titleLabel?.contentMode = .center
         habitButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
@@ -87,7 +86,7 @@ extension HabitOrIrregularEventViewController {
     
     func addIrregularEventOnView() {
         irregularEventButton.backgroundColor = .hdBlack
-        irregularEventButton.setTitle("Нерегулярное событие", for: .normal)
+        irregularEventButton.setTitle(NSLocalizedString("IrregularEvent", comment: ""), for: .normal)
         irregularEventButton.setTitleColor(.hdWhite, for: .normal)
         irregularEventButton.titleLabel?.contentMode = .center
         irregularEventButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)

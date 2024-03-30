@@ -82,7 +82,6 @@ final class TrackerRecordStore: NSObject {
             #keyPath(TrackerRecordCoreData.recordID), id.uuidString,
             #keyPath(TrackerRecordCoreData.date), date as NSDate
         )
-        print(request)
         
         let recordID = try! context.execute(request) as! NSAsynchronousFetchResult<NSFetchRequestResult>
         let id = recordID.finalResult![0] as! NSManagedObjectID

@@ -43,6 +43,5 @@ extension CategoryViewModel: StoreDelegate {
     
     func didUpdate() {
         categoryList = getCategoryList()
-        print(categoryList.count)
     }
 }

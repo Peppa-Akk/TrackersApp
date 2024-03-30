@@ -6,6 +6,7 @@ struct Tracker {
     let color: UIColor
     let emoji: String
     let date: [ScheduleModel]
+    let isPin: Bool
 }
 
 struct TrackerCategory {

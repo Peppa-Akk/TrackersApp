@@ -2,30 +2,30 @@ import Foundation
 
 enum ScheduleModel: String, CaseIterable, Codable {
     
-    case monday = "Понедельник"
-    case tuesday = "Вторник"
-    case wednesday = "Среда"
-    case thursday = "Четверг"
-    case friday = "Пятница"
-    case saturday = "Суббота"
-    case sunday = "Воскресенье"
+    case monday = "Monday"
+    case tuesday = "Tuesday"
+    case wednesday = "Wednesday"
+    case thursday = "Thursday"
+    case friday = "Friday"
+    case saturday = "Saturday"
+    case sunday = "Sunday"
     
     var shortName: String {
         switch self {
         case .monday:
-            "Пн"
+            NSLocalizedString("Monday.ShortName", comment: "")
         case .tuesday:
-            "Вт"
+            NSLocalizedString("Tuesday.ShortName", comment: "")
         case .wednesday:
-            "Ср"
+            NSLocalizedString("Wednesday.ShortName", comment: "")
         case .thursday:
-            "Чт"
+            NSLocalizedString("Thursday.ShortName", comment: "")
         case .friday:
-            "Пт"
+            NSLocalizedString("Friday.ShortName", comment: "")
         case .saturday:
-            "Сб"
+            NSLocalizedString("Saturday.ShortName", comment: "")
         case .sunday:
-            "Вс"
+            NSLocalizedString("Sunday.ShortName", comment: "")
         }
     }
     

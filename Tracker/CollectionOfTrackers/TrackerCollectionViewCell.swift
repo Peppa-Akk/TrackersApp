@@ -3,6 +3,9 @@ import UIKit
 protocol TrackerCollectionViewCellDelegate: AnyObject {
     func completeTracker(id: UUID, at indexPath: IndexPath)
     func uncompleted(id: UUID, at indexPath: IndexPath)
+    func pinTracker(id: UUID)
+    func editTracker(id: UUID)
+    func deleteTracker(id: UUID)
 }
 
 //MARK: - TrackerCollectionViewCell
@@ -15,13 +18,16 @@ class TrackerCollectionViewCell: UICollectionViewCell {
     let emojiImageView = UIImageView()
     let emojiLabel = UILabel()
     let nameLabel = UILabel()
+    let pinImageView = UIImageView()
     
     let managmentView = UIView()
     let dateLabel = UILabel()
     let plusButton = UIButton()
     
+    private let analyticService = AnalyticsService.shared
     weak var delegate: TrackerCollectionViewCellDelegate?
     private var isCompletedToday: Bool = false
+    private var isPin: Bool = false
     private var trackerID: UUID?
     private var indexPath: IndexPath?
 
@@ -63,6 +69,8 @@ extension TrackerCollectionViewCell {
         addEmojiImageView()
         addEmojiLabel()
         addNameLabel()
+        addPinImageView()
+        setupPin()
         addManagmentView()
         addDateLabel()
         addPlusButton()
@@ -81,6 +89,8 @@ extension TrackerCollectionViewCell {
             cardView.trailingAnchor.constraint(equalTo: trailingAnchor),
             cardView.heightAnchor.constraint(equalToConstant: 90)
         ])
+        
+        cardView.addInteraction(UIContextMenuInteraction(delegate: self))
     }
     
     func addEmojiView() {
@@ -132,6 +142,26 @@ extension TrackerCollectionViewCell {
             nameLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 44),
             nameLabel.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -12)
         ])
+    }
+    
+    func addPinImageView() {
+        
+        let image = UIImage(systemName: "pin.fill")
+        pinImageView.image = image?.withAlignmentRectInsets(UIEdgeInsets(top: -6, left: -6, bottom: -6, right: -6))
+        pinImageView.tintColor = .white
+        cardView.addSubview(pinImageView)
+        pinImageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            pinImageView.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 12),
+            pinImageView.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -4),
+            pinImageView.heightAnchor.constraint(equalToConstant: 24),
+            pinImageView.widthAnchor.constraint(equalToConstant: 24)
+        ])
+    }
+    
+    func setupPin() {
+        pinImageView.isHidden = !isPin
     }
     
     //MARK: - Quantity Managment
@@ -189,12 +219,14 @@ extension TrackerCollectionViewCell {
         self.trackerID = tracker.id
         self.isCompletedToday = isCompletedToday
         self.indexPath = indexPath
+        self.isPin = tracker.isPin
         
         plusButton.backgroundColor = tracker.color
         let action = isCompletedToday ? setCompleteImage: setAddTrackerImage
         action(tracker.color)
         
         dateLabel.text = "\(completedDays.days())"
+        setupPin()
     }
     
     func setCompleteImage(with tintColor: UIColor) {
@@ -209,5 +241,39 @@ extension TrackerCollectionViewCell {
         plusButton.setImage(.plus, for: .normal)
         plusButton.tintColor = tintColor
         plusButton.layer.opacity = 1
+    }
+}
+
+extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
+    
+    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
+        analyticService.report(event: "Long press on tracker's cell to open a context menu on TrackersViewController", params: ["event": "click", "screen": "Main", "item": "cell"])
+        let menuConfig = UIContextMenuConfiguration(actionProvider:  { _ in
+            
+            let fixAction = UIAction(
+                title: self.isPin ? NSLocalizedString("Unpin", comment: "") : NSLocalizedString("Pin", comment: "")
+            ) { _ in
+                guard let trackerID = self.trackerID else { return }
+                self.analyticService.report(event: "Tracker is \(self.isPin ? "unpinned" : "pinned") on TrackersViewController", params: ["event": "click", "screen": "Main"])
+                self.delegate?.pinTracker(id: trackerID)
+            }
+            
+            let editAction = UIAction(title: NSLocalizedString("Edit", comment: "")) { _ in
+                self.analyticService.report(event: "Chose edit option in tracker's context menu", params: ["event": "click", "screen": "Main", "item": "edit"])
+                guard let trackerID = self.trackerID else { return }
+                self.delegate?.editTracker(id: trackerID)
+            }
+            
+            let deleteAction = UIAction(title: NSLocalizedString("Delete.ContextMenu", comment: "")) { _ in
+                guard let trackerID = self.trackerID else { return }
+                self.analyticService.report(event: "Choose delete option in tracker's context menu on TrackersViewController", params: ["event": "click", "screen": "Main", "item": "delete"])
+                self.delegate?.deleteTracker(id: trackerID)
+            }
+            deleteAction.attributes = .destructive
+            
+            return UIMenu(children: [fixAction, editAction, deleteAction])
+        })
+        
+        return menuConfig
     }
 }

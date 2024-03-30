@@ -4,6 +4,7 @@ import UIKit
 protocol CreateNewTrackerViewControllerDelegate: AnyObject {
     
     func saveAndReloadData(with newData: Tracker, and category: String, _ id: UUID)
+    func reloadTrackers()
 }
 
 enum TrackerType: Int {
@@ -14,9 +15,9 @@ enum TrackerType: Int {
     var trackerText: String {
         switch self {
         case .event:
-            return "Новое нерегулярное событие"
+            return NSLocalizedString("NewIrregularEvent", comment: "")
         case .habit:
-            return "Новая привычка"
+            return NSLocalizedString("NewHabbit", comment: "")
         }
     }
 }
@@ -33,13 +34,13 @@ enum ButtonType: Int {
     case schedule = 1
 }
 
-let emojisForSelect: EmojisModel = EmojisModel(title: "Emoji", emojis:
+let emojisForSelect: EmojisModel = EmojisModel(title: NSLocalizedString("Emoji", comment: ""), emojis:
     [
         "🙂", "😻", "🌺", "🐶", "❤️", "😱",
         "😇", "😡", "🥶", "🤔", "🙌", "🍔",
         "🥦", "🏓", "🥇", "🎸", "🏝️", "😪"
     ])
-let colorsForSelect: ColorsModel = ColorsModel(title: "Цвет", colors:
+let colorsForSelect: ColorsModel = ColorsModel(title: NSLocalizedString("Color", comment: ""), colors:
     [
         .colorSelection1, .colorSelection2, .colorSelection3, .colorSelection4, .colorSelection5, .colorSelection6,
         .colorSelection7, .colorSelection8, .colorSelection9, .colorSelection10, .colorSelection11, .colorSelection12,
@@ -60,24 +61,24 @@ final class CreateNewTrackerViewController: UIViewController {
     private var selectEmoji: SelectEmoji?
     private var selectColor: SelectColor?
     
-    private var selectedDays: String = ""
-    private var selectedCategory: String = ""
+    var selectedDays: String = ""
+    var selectedCategory: String = ""
     
-    private lazy var nameTrackerTextField = UITextField()
+    lazy var nameTrackerTextField = UITextField()
     
-    private var contentView = UIView()
-    private var buttonsStackView = UIStackView()
+    var contentView = UIView()
+    var buttonsStackView = UIStackView()
     
-    private lazy var cancelButton = UIButton()
-    private lazy var createButton = UIButton()
+    lazy var cancelButton = UIButton()
+    lazy var createButton = UIButton()
     
-    private lazy var collection: UICollectionView = {
+    lazy var collection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         return collectionView
     }()
-    private var tableView = UITableView()
-    private var scrollView = UIScrollView()
+    var tableView = UITableView()
+    var scrollView = UIScrollView()
     
     var schedule: [ScheduleModel] = []
     var category: TrackerCategory? = nil
@@ -104,6 +105,15 @@ final class CreateNewTrackerViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - NavigationController
+    func setupNavigationController() {
+        navigationController?.view.backgroundColor = .hdWhite
+        navigationController?.navigationBar.isTranslucent = false
+        self.navigationItem.title = "\(trackerType.trackerText)"
+        navigationItem.setHidesBackButton(true, animated: false)
+    }
+    
+    //MARK: - OBJC Methods
     @objc
     private func cancelButtonTouchUpInside() {
         
@@ -124,23 +134,12 @@ final class CreateNewTrackerViewController: UIViewController {
                     title: nameTrackerTextField.text ?? "None",
                     color: color,
                     emoji: emoji,
-                    date: schedule),
+                    date: schedule, 
+                    isPin: false),
                 and: categoryTitle,
                 categoryID)
             navigationController?.viewControllers.first?.dismiss(animated: true)
         }
-    }
-}
-
-
-//MARK: - NavigationController
-extension CreateNewTrackerViewController {
-    
-    func setupNavigationController() {
-        navigationController?.view.backgroundColor = .hdWhite
-        navigationController?.navigationBar.isTranslucent = false
-        self.navigationItem.title = "\(trackerType.trackerText)"
-        navigationItem.setHidesBackButton(true, animated: false)
     }
 }
 
@@ -174,7 +173,7 @@ extension CreateNewTrackerViewController {
     func setupTextField() {
         
         let placeholderTitle = NSAttributedString(
-            string: "Введите название трекера",
+            string: NSLocalizedString("Placeholder.Tracker.TextField", comment: ""),
             attributes: [NSAttributedString.Key.foregroundColor:UIColor.hdGray	]
         )
         nameTrackerTextField.attributedPlaceholder = placeholderTitle
@@ -281,7 +280,7 @@ extension CreateNewTrackerViewController {
         cancelButton.layer.cornerRadius = 16
         cancelButton.layer.masksToBounds = true
         cancelButton.layer.borderWidth = 1
-        cancelButton.setTitle("Отменить", for: .normal)
+        cancelButton.setTitle(NSLocalizedString("Cancel", comment: ""), for: .normal)
         cancelButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         cancelButton.setTitleColor(.hdRed, for: .normal)
         cancelButton.layer.borderColor = UIColor.hdRed.cgColor
@@ -292,7 +291,7 @@ extension CreateNewTrackerViewController {
     
     func setupCreateButton() {
         
-        createButton.setTitle("Создать", for: .normal)
+        createButton.setTitle(NSLocalizedString("Create.Button", comment: ""), for: .normal)
         createButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         createButton.setTitleColor(.hdWhite, for: .normal)
         createButton.backgroundColor = .hdGray
@@ -330,7 +329,6 @@ extension CreateNewTrackerViewController {
     }
     
     func checkSubtitle(with data: String, in buttonType: Int) {
-        
         guard let cell = tableView.cellForRow(at: IndexPath(row: buttonType, section: 0)) as? ButtonCell else { assertionFailure("Cannot find cell in tableView"); return}
         
         switch data.isEmpty {
@@ -515,11 +513,11 @@ extension CreateNewTrackerViewController: UITableViewDataSource {
         switch indexPath.row {
         case TrackerType.event.rawValue:
             
-            cell.title.text = "Категория"
+            cell.title.text = NSLocalizedString("Category", comment: "")
             
         case TrackerType.habit.rawValue:
             
-            cell.title.text = "Расписание"
+            cell.title.text = NSLocalizedString("Schedule", comment: "")
 
         default:
             return cell
@@ -573,11 +571,11 @@ extension CreateNewTrackerViewController: ScheduleDelegate, CategoryDelegate {
         scheduleSort.sort { $0.compareValue < $1.compareValue }
         switch scheduleSort {
         case [.monday, .tuesday, .wednesday, .thursday, .friday]:
-            selectedDays = "Будние"
+            selectedDays = NSLocalizedString("Weekdays", comment: "")
         case ScheduleModel.allCases:
-            selectedDays = "Каждый день"
+            selectedDays = NSLocalizedString("EveryDay", comment: "")
         case [.saturday, .sunday]:
-            selectedDays = "Выходные"
+            selectedDays = NSLocalizedString("Weekend", comment: "")
         default:
             let days = schedule.map{ "\($0.shortName)" }
             selectedDays = days.joined(separator: ", ")

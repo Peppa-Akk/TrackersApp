@@ -73,12 +73,14 @@ final class CategoryStore: NSObject {
                 let color = tracker.color,
                 let schedule = tracker.schedule
             {
+                let isPin = tracker.isPin
                 let newTracker = Tracker(
                     id: id,
                     title: title,
                     color: uiColorMarshalling.color(from: color),
                     emoji: emoji,
-                    date: schedule.schedule
+                    date: schedule.schedule, 
+                    isPin: isPin
                 )
                 trackers.append(newTracker)
             }

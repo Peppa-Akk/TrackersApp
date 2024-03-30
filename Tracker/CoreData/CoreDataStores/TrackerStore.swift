@@ -78,13 +78,15 @@ class TrackerStore: NSObject {
         guard let color = trackerCoreData.color else { throw TrackerStoreError.decodingErrorInvalidColor }
         guard let emoji = trackerCoreData.emoji else { throw TrackerStoreError.decodingErrorInvalidEmoji }
         guard let schedule = trackerCoreData.schedule else { throw TrackerStoreError.decodingErrorInvalidSchedule }
+        let isPin = trackerCoreData.isPin
         
         return Tracker(
             id: id,
             title: title,
             color: uiColorMarshalling.color(from: color),
             emoji: emoji,
-            date: schedule.schedule
+            date: schedule.schedule,
+            isPin: isPin
         )
     }
     
@@ -113,6 +115,7 @@ class TrackerStore: NSObject {
         
         guard let object = try? context.existingObject(with: idTracker) as? TrackerCoreData else { assertionFailure("INVALID EXISTING TRACKER OBJECT"); return}
 
+        object.title = newData.title
         object.color = uiColorMarshalling.hexString(from: newData.color)
         object.emoji = newData.emoji
         object.schedule = DaysValue(schedule: newData.date)
@@ -125,6 +128,34 @@ class TrackerStore: NSObject {
         
         let tracker = fetchTracker(with: fetchTrackerID(with: trackerID))
         tracker.record = record
+    }
+    
+    func pinTracker(with id: UUID) {
+        
+        let idTracker = fetchTrackerID(with: id)
+        let tracker = fetchTracker(with: idTracker)
+        tracker.isPin = !tracker.isPin
+        (UIApplication.shared.delegate as! AppDelegate).saveContext()
+    }
+    
+    func deleteTracker(with id: UUID) {
+        
+        let idTracker = fetchTrackerID(with: id)
+        let tracker = fetchTracker(with: idTracker)
+        var records: [TrackerRecordCoreData] = []
+        
+        let request = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
+        request.returnsObjectsAsFaults = false
+        request.predicate = NSPredicate(format: "%K == %@",
+                                        #keyPath(TrackerRecordCoreData.recordID),
+                                        id.uuidString)
+        records = try! context.fetch(request)
+        for record in records {
+            context.delete(record)
+            (UIApplication.shared.delegate as! AppDelegate).saveContext()
+        }
+        context.delete(tracker)
+        (UIApplication.shared.delegate as! AppDelegate).saveContext()
     }
 }
 

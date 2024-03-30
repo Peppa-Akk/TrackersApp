@@ -54,7 +54,7 @@ extension CreateCategoryViewController {
     func setupNavigationController() {
         navigationController?.view.backgroundColor = .hdWhite
         navigationController?.navigationBar.isTranslucent = false
-        self.navigationItem.title = "Новая категория"
+        self.navigationItem.title = NSLocalizedString("AddNewCategory", comment: "")
     }
 }
 
@@ -71,7 +71,7 @@ extension CreateCategoryViewController {
     func setupTextField() {
         
         let placeholderTitle = NSAttributedString(
-            string: "Введите название категории",
+            string: NSLocalizedString("Placeholder.Category.TextField", comment: ""),
             attributes: [NSAttributedString.Key.foregroundColor:UIColor.hdGray]
         )
         nameCategoryTextField.attributedPlaceholder = placeholderTitle
@@ -98,7 +98,7 @@ extension CreateCategoryViewController {
     func setupButton() {
         
         readyButton.backgroundColor = .hdGray
-        readyButton.setTitle("Готово", for: .normal)
+        readyButton.setTitle(NSLocalizedString("Ready.Button", comment: ""), for: .normal)
         readyButton.setTitleColor(.hdWhite, for: .normal)
         readyButton.titleLabel?.contentMode = .center
         readyButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)

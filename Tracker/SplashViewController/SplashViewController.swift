@@ -53,14 +53,14 @@ extension SplashScreenViewController {
     
     private func switchToTabBar() {
         guard
-            let window = UIApplication.shared.windows.first else { fatalError("Gabella") }
+            let window = UIApplication.shared.windows.first else { return }
         let tabBarController = TabBarController()
         window.rootViewController = tabBarController
     }
     
     private func switchToOnboardingVC() {
         guard
-            let window = UIApplication.shared.windows.first else { fatalError("Gabella") }
+            let window = UIApplication.shared.windows.first else { return }
         let onboardVC = OnboardingViewController(
             transitionStyle: .scroll,
             navigationOrientation: .horizontal

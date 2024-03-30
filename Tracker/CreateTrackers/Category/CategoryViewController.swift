@@ -36,6 +36,7 @@ final class CategoryViewController: UIViewController {
         viewModel = CategoryViewModel()
         viewModel.categoryBinding = { [weak self] _ in
             guard let self = self else { return }
+            self.setupPlug()
             self.tableView.reloadData()
         }
         activateUI()
@@ -64,7 +65,7 @@ extension CategoryViewController {
     func setupNavigationController() {
         navigationController?.view.backgroundColor = .hdWhite
         navigationController?.navigationBar.isTranslucent = false
-        self.navigationItem.title = "Категория"
+        self.navigationItem.title = NSLocalizedString("Category", comment: "")
     }
 }
 
@@ -106,7 +107,7 @@ extension CategoryViewController {
     func setupButton() {
         
         readyButton.backgroundColor = .hdBlack
-        readyButton.setTitle("Добавить категорию", for: .normal)
+        readyButton.setTitle(NSLocalizedString("AddCategory", comment: ""), for: .normal)
         readyButton.setTitleColor(.hdWhite, for: .normal)
         readyButton.titleLabel?.contentMode = .center
         readyButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
@@ -142,7 +143,7 @@ extension CategoryViewController {
     
     func setupPlaceholderLabel() {
         
-        placeholderLabel.text = "Привычки и события можно\nобъединить по смыслу"
+        placeholderLabel.text = NSLocalizedString("Placeholder.Category", comment: "")
         placeholderLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         placeholderLabel.textColor = .hdBlack
         placeholderLabel.numberOfLines = 2
