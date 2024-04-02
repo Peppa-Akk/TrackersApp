@@ -50,7 +50,7 @@ class TrackerStore: NSObject {
     }
     
     convenience override init() {
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        let context = AppDelegate.persistentContainer.viewContext
         self.init(context: context)
     }
     
@@ -58,7 +58,7 @@ class TrackerStore: NSObject {
     func addNewTracker(_ tracker: Tracker, with categoryID: NSManagedObjectID) {
         let trackerCoreData = TrackerCoreData(context: context)
         updateExistingTracker(trackerCoreData, with: tracker, and: categoryID)
-        (UIApplication.shared.delegate as! AppDelegate).saveContext()
+        AppDelegate.saveContext()
     }
     
     func updateExistingTracker(_ trackerCoreData: TrackerCoreData, with tracker: Tracker, and categoryID: NSManagedObjectID) {
@@ -96,8 +96,15 @@ class TrackerStore: NSObject {
         request.resultType = .managedObjectIDResultType
         request.predicate = NSPredicate(format: "trackerID = %@", id.uuidString)
         
-        let trackerID = try! context.execute(request) as! NSAsynchronousFetchResult<NSFetchRequestResult>
-        let id = trackerID.finalResult![0] as! NSManagedObjectID
+        let trackerID: NSAsynchronousFetchResult<NSFetchRequestResult>?
+        do {
+            trackerID = try context.execute(request) as? NSAsynchronousFetchResult<NSFetchRequestResult> ?? nil
+        } catch {
+            trackerID = nil
+            assertionFailure("Error:/n\(error)")
+        }
+        guard let trackerID = trackerID else { assertionFailure("TRACKER ID IS NIL"); return NSManagedObjectID() }
+        guard let id = trackerID.finalResult?[0] as? NSManagedObjectID else { return NSManagedObjectID() }
         return id
     }
     
@@ -121,7 +128,7 @@ class TrackerStore: NSObject {
         object.schedule = DaysValue(schedule: newData.date)
         object.category = categoryCoreData
         
-        (UIApplication.shared.delegate as! AppDelegate).saveContext()
+        AppDelegate.saveContext()
     }
     
     func relationshipWithRecord(_ record: TrackerRecordCoreData, by trackerID: UUID) {
@@ -135,7 +142,7 @@ class TrackerStore: NSObject {
         let idTracker = fetchTrackerID(with: id)
         let tracker = fetchTracker(with: idTracker)
         tracker.isPin = !tracker.isPin
-        (UIApplication.shared.delegate as! AppDelegate).saveContext()
+        AppDelegate.saveContext()
     }
     
     func deleteTracker(with id: UUID) {
@@ -149,13 +156,18 @@ class TrackerStore: NSObject {
         request.predicate = NSPredicate(format: "%K == %@",
                                         #keyPath(TrackerRecordCoreData.recordID),
                                         id.uuidString)
-        records = try! context.fetch(request)
+        do {
+            records = try context.fetch(request)
+        } catch {
+            records = []
+            assertionFailure("Error:/n\(error)")
+        }
         for record in records {
             context.delete(record)
-            (UIApplication.shared.delegate as! AppDelegate).saveContext()
+            AppDelegate.saveContext()
         }
         context.delete(tracker)
-        (UIApplication.shared.delegate as! AppDelegate).saveContext()
+        AppDelegate.saveContext()
     }
 }
 

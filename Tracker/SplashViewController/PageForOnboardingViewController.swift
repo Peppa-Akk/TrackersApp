@@ -18,8 +18,8 @@ final class PageForOnboardingViewController: UIViewController {
         UIImage(resource: .onboardImage2)
     ]
     let textLabel: [String] = [
-        NSLocalizedString("Onboarding 1", comment: ""),
-        NSLocalizedString("Onboarding 2", comment: "")
+        NSLocalizedString("Onboarding1", comment: ""),
+        NSLocalizedString("Onboarding2", comment: "")
     ]
     
     lazy var entranceButton: UIButton = {
@@ -95,7 +95,7 @@ extension PageForOnboardingViewController {
         NSLayoutConstraint.activate([
             welcomeLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             welcomeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            welcomeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 16),
+            welcomeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
             
             entranceButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),

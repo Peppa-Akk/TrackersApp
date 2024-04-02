@@ -39,7 +39,7 @@ final class TrackerRecordStore: NSObject {
     }
     
     convenience override init() {
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        let context = AppDelegate.persistentContainer.viewContext
         self.init(context: context)
     }
     
@@ -55,7 +55,7 @@ final class TrackerRecordStore: NSObject {
         
         let trackerRecordCoreData = TrackerRecordCoreData(context: context)
         updateExistingRecord(trackerRecordCoreData, with: record, and: trackerID)
-        (UIApplication.shared.delegate as! AppDelegate).saveContext()
+        AppDelegate.saveContext()
     }
     
     func updateExistingRecord(_ recordCoreData: TrackerRecordCoreData, with record: TrackerRecord, and trackerID: UUID) {
@@ -63,13 +63,13 @@ final class TrackerRecordStore: NSObject {
         recordCoreData.recordID = record.id
         recordCoreData.date = record.date
         trackerStore.relationshipWithRecord(recordCoreData, by: trackerID)
-        (UIApplication.shared.delegate as! AppDelegate).saveContext()
+        AppDelegate.saveContext()
     }
     
     func deleteRecord(with recordID: UUID, and date: Date) {
         
         context.delete(fetchRecord(with: fetchRecordID(with: recordID, and: date)))
-        (UIApplication.shared.delegate as! AppDelegate).saveContext()
+        AppDelegate.saveContext()
     }
     
     func fetchRecordID(with id: UUID, and date: Date) -> NSManagedObjectID {

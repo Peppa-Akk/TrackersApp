@@ -24,9 +24,9 @@ final class TrackersViewController: UIViewController {
     private var filterButton = UIButton()
     
     //MARK: Store init
-    private let trackerStore = TrackerStore(context: (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext)
+    private let trackerStore = TrackerStore(context: AppDelegate.persistentContainer.viewContext)
     private let categoryStore = CategoryStore.shared
-    private let recordStore = TrackerRecordStore(context: (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext)
+    private let recordStore = TrackerRecordStore(context: AppDelegate.persistentContainer.viewContext)
     
     //MARK: - Variables
     private var currentDay = Date()
@@ -175,13 +175,13 @@ final class TrackersViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        analyticService.report(event: "Opened TrackersViewController", params: ["event": "open", "screen": "Main"])
+        analyticService.report(event: "Opened TrackersViewController", params: ["screen": "Main"])
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        analyticService.report(event: "Closed TrackersViewController", params: ["event": "close", "screen": "Main"])
+        analyticService.report(event: "Closed TrackersViewController", params: ["screen": "Main"])
     }
     
     //MARK: - Class Methods
@@ -233,8 +233,8 @@ final class TrackersViewController: UIViewController {
     @objc
     private func addTrackerButtonAction() {
 //        FOR DELETE KEYCHAIN PROPERTY
-//        let storage = AuthStorage()
-//        storage.cleanData()
+        let storage = AuthStorage()
+        storage.cleanData()
         analyticService.report(event: "Add tracker button tapped on TrackersViewController", params: ["event": "click", "screen": "Main", "item": "add_track"])
         let vc = HabitOrIrregularEventViewController()
         vc.delegate = self

@@ -24,6 +24,7 @@ extension StatisticCell {
     
     private func activateUI() {
         
+        contentView.backgroundColor = .hdWhite
         contentView.layer.cornerRadius = 16
         contentView.layer.masksToBounds = true
         setGradientBackground()

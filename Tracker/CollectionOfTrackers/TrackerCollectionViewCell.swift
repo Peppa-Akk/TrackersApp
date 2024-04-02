@@ -219,7 +219,7 @@ extension TrackerCollectionViewCell {
         self.trackerID = tracker.id
         self.isCompletedToday = isCompletedToday
         self.indexPath = indexPath
-        self.isPin = tracker.isPin
+        isPin = tracker.isPin
         
         plusButton.backgroundColor = tracker.color
         let action = isCompletedToday ? setCompleteImage: setAddTrackerImage
@@ -249,22 +249,24 @@ extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
     func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
         analyticService.report(event: "Long press on tracker's cell to open a context menu on TrackersViewController", params: ["event": "click", "screen": "Main", "item": "cell"])
         let menuConfig = UIContextMenuConfiguration(actionProvider:  { _ in
-            
             let fixAction = UIAction(
                 title: self.isPin ? NSLocalizedString("Unpin", comment: "") : NSLocalizedString("Pin", comment: "")
-            ) { _ in
+            ) { [weak self] _ in
+                guard let self = self else { return }
                 guard let trackerID = self.trackerID else { return }
                 self.analyticService.report(event: "Tracker is \(self.isPin ? "unpinned" : "pinned") on TrackersViewController", params: ["event": "click", "screen": "Main"])
                 self.delegate?.pinTracker(id: trackerID)
             }
             
-            let editAction = UIAction(title: NSLocalizedString("Edit", comment: "")) { _ in
+            let editAction = UIAction(title: NSLocalizedString("Edit", comment: "")) { [weak self] _ in
+                guard let self = self else { return }
                 self.analyticService.report(event: "Chose edit option in tracker's context menu", params: ["event": "click", "screen": "Main", "item": "edit"])
                 guard let trackerID = self.trackerID else { return }
                 self.delegate?.editTracker(id: trackerID)
             }
             
-            let deleteAction = UIAction(title: NSLocalizedString("Delete.ContextMenu", comment: "")) { _ in
+            let deleteAction = UIAction(title: NSLocalizedString("Delete.ContextMenu", comment: "")) { [weak self] _ in
+                guard let self = self else { return }
                 guard let trackerID = self.trackerID else { return }
                 self.analyticService.report(event: "Choose delete option in tracker's context menu on TrackersViewController", params: ["event": "click", "screen": "Main", "item": "delete"])
                 self.delegate?.deleteTracker(id: trackerID)

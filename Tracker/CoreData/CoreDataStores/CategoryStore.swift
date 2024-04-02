@@ -32,11 +32,11 @@ final class CategoryStore: NSObject {
     }()
     
     convenience override init() {
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        try! self.init(context: context)
+        let context = AppDelegate.persistentContainer.viewContext
+        self.init(context: context)
     }
     
-    init(context: NSManagedObjectContext) throws {
+    private init(context: NSManagedObjectContext) {
         self.context = context
         super.init()
     }
@@ -49,10 +49,10 @@ final class CategoryStore: NSObject {
         return collection
     }
     
-    func addNewCategory(_ category: TrackerCategory) throws {
+    func addNewCategory(_ category: TrackerCategory) {
         let trackerCategory = TrackerCategoryCoreData(context: context)
         updateExistingCategory(trackerCategory, with: category)
-        (UIApplication.shared.delegate as! AppDelegate).saveContext()
+        AppDelegate.saveContext()
     }
     
     func updateExistingCategory(_ categoryCoreData: TrackerCategoryCoreData, with category: TrackerCategory) {
@@ -64,7 +64,8 @@ final class CategoryStore: NSObject {
         guard let categoryID = categoryCoreData.categoryID else { throw CategoryStoreError.decodingErrorInvalidID }
         guard let title = categoryCoreData.title else { throw CategoryStoreError.decodingErrorInvalidTitle }
         var trackers: [Tracker] = []
-        let allTrackers = categoryCoreData.trackers?.allObjects as! [TrackerCoreData]
+        let allTrackers = categoryCoreData.trackers?.allObjects as? [TrackerCoreData]
+        guard let allTrackers = allTrackers else { throw CategoryStoreError.decodingErrorInvalidTrackers }
         for tracker in allTrackers {
             if
                 let id = tracker.trackerID,
@@ -99,9 +100,16 @@ final class CategoryStore: NSObject {
         request.returnsObjectsAsFaults = false
         request.resultType = .managedObjectIDResultType
         request.predicate = NSPredicate(format: "%K == %@", #keyPath(TrackerCategoryCoreData.categoryID), id.uuidString)
-
-        let categoryID = try! context.execute(request) as! NSAsynchronousFetchResult<NSFetchRequestResult>
-        let id = categoryID.finalResult![0] as! NSManagedObjectID
+        
+        let categoryID: NSAsynchronousFetchResult<NSFetchRequestResult>?
+        do {
+            categoryID = try context.execute(request) as? NSAsynchronousFetchResult<NSFetchRequestResult> ?? nil
+        } catch {
+            categoryID = nil
+            assertionFailure("Error:/n\(error)")
+        }
+        guard let categoryID = categoryID else { assertionFailure("CATEGORY ID IS NIL"); return NSManagedObjectID() }
+        guard let id = categoryID.finalResult?[0] as? NSManagedObjectID else { return NSManagedObjectID() }
         return id
     }
 

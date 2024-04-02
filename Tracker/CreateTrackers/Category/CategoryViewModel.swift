@@ -25,7 +25,7 @@ final class CategoryViewModel {
     
     func addNewCategory(_ category: TrackerCategory) {
         
-        try! categoryStore.addNewCategory(category)
+        categoryStore.addNewCategory(category)
     }
     
     private func getCategoryList() -> [CategoryModel] {
