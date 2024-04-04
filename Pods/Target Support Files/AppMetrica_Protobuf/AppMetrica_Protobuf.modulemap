@@ -1,0 +1,6 @@
+framework module AppMetrica_Protobuf {
+  umbrella header "AppMetrica_Protobuf-umbrella.h"
+
+  export *
+  module * { export * }
+}

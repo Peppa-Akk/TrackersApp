@@ -4,7 +4,8 @@ import UIKit
 protocol ScheduleDelegate: AnyObject {
     
     var schedule: [ScheduleModel] { get set }
-    func deselectButton()
+    func deselectButton(with type: Int)
+    func setDescription(with schedule: [ScheduleModel])
 }
 
 final class ScheduleViewController: UIViewController {
@@ -36,7 +37,7 @@ final class ScheduleViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        delegate?.deselectButton()
+        delegate?.deselectButton(with: ButtonType.schedule.rawValue)
     }
     
     @objc
@@ -56,6 +57,7 @@ final class ScheduleViewController: UIViewController {
     private func chooseWeekDays() {
         
         delegate?.schedule = selectedDays
+        delegate?.setDescription(with: selectedDays)
         self.dismiss(animated: true)
     }
 }
@@ -67,7 +69,7 @@ extension ScheduleViewController {
     func setupNavigationController() {
         navigationController?.view.backgroundColor = .hdWhite
         navigationController?.navigationBar.isTranslucent = false
-        self.navigationItem.title = "Расписание"
+        self.navigationItem.title = NSLocalizedString("Schedule", comment: "")
     }
 }
 
@@ -105,7 +107,7 @@ extension ScheduleViewController {
     func setupButton() {
         
         readyButton.backgroundColor = .hdBlack
-        readyButton.setTitle("Готово", for: .normal)
+        readyButton.setTitle(NSLocalizedString("Ready.Button", comment: ""), for: .normal)
         readyButton.setTitleColor(.hdWhite, for: .normal)
         readyButton.titleLabel?.contentMode = .center
         readyButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
@@ -152,7 +154,7 @@ extension ScheduleViewController: UITableViewDataSource {
         cell.accessoryView = switchView
         cell.selectionStyle = .none
         
-        cell.title.text = week[indexPath.row].rawValue
+        cell.title.text = NSLocalizedString(week[indexPath.row].rawValue, comment: "")
         
         return cell
     }
